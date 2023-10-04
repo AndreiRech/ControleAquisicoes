@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Usuario {
     private int identificador;
     private String nome;
@@ -31,6 +33,23 @@ public class Usuario {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public void contPedidos(ArrayList <Pedido> pedidos) {
+        int qntTotal=0, qntAprovados=0, qntReprovados=0;
+        for (Pedido pedido : pedidos) {
+            qntTotal++;
+            if (pedido.getStatusAprovacao()) {
+                qntAprovados++;
+            }
+            else {
+                qntReprovados++;
+            }
+        }
+
+        System.out.printf("Quantidade de pedidos : [%d]\n", qntTotal);
+        System.out.printf("Quantidade de pedidos aprovados : [%d] | [%.2f%%]\n", qntAprovados, ((double) qntAprovados/qntTotal)*100);
+        System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntAprovados/qntReprovados)*100);
     }
 
     @Override

@@ -16,4 +16,8 @@ public class Pedido {
         this.dataConclusao = dataConclusao;
         this.dataPedido = dataPedido;
     }
+
+    public boolean getStatusAprovacao() {
+        return statusAprovacao;
+    }
 }
