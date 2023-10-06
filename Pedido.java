@@ -20,4 +20,12 @@ public class Pedido {
     public boolean getStatusAprovacao() {
         return statusAprovacao;
     }
+
+    public String getDataPedido() {
+        return dataPedido;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
 }
