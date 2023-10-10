@@ -1,5 +1,7 @@
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
 public class Usuario {
     private int identificador;
     private String nome;
@@ -57,7 +59,7 @@ public class Usuario {
         int quantidade = 0;
 
         for (Pedido p : pedidos) {
-            if(verificaData(p.getDataPedido(), dataAtual)) {
+            if(verificaData(p.getDataPedido())) {
                 quantidade++;
                 valorTotal += p.getValorTotal();
             }
@@ -70,23 +72,20 @@ public class Usuario {
         return media;
     }
 
-    private boolean verificaData(String dataPedido, String dataAtual) {
+    public boolean verificaData(String dataPedido) {
         String[] pPedido = dataPedido.split("-");
-        String[] pAtual = dataAtual.split("-");
 
         int anoPedido = Integer.parseInt(pPedido[2]);
         int mesPedido = Integer.parseInt(pPedido[1]);
         int diaPedido = Integer.parseInt(pPedido[0]);
 
-        int anoAtual = Integer.parseInt(pAtual[2]);
-        int mesAtual = Integer.parseInt(pAtual[1]);
-        int diaAtual = Integer.parseInt(pAtual[0]);
+        LocalDate dtDataPedido = LocalDate.of(anoPedido, mesPedido, diaPedido);
+        LocalDate dtDataAtual = LocalDate.now();
 
-        int diferencaAno = anoAtual - anoPedido;
-        int diferencaMes = mesAtual - mesPedido;
-        int diferencaDia = diaAtual - diaPedido;
-        
-        return (diferencaAno == 0 && diferencaMes == 0 && diferencaDia <= 30);
+        long dias = ChronoUnit.DAYS.between(dtDataPedido, dtDataAtual);
+
+
+        return dias <= 30;
     }
 
     @Override
