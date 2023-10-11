@@ -84,6 +84,22 @@ public class Usuario {
         }
     }
 
+    public Pedido maiorPedidoAberto(ArrayList <Pedido> pedidos) {
+        Pedido maiorP = null;
+        double maiorV = 0;
+
+        for (Pedido p : pedidos) {
+            if (p.getStatusAprovacao()) {
+                if (maiorP == null || p.getValorTotal() > maiorV) {
+                    maiorP = p;
+                    maiorV = p.getValorTotal();
+                }
+            }
+        }
+
+        return maiorP;
+    }
+
     public boolean verificaData(String dataPedido) {
         String[] pPedido = dataPedido.split("-");
 
