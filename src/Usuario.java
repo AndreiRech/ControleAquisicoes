@@ -72,6 +72,18 @@ public class Usuario {
         return media;
     }
 
+    public void totalDepartamento30(ArrayList<Pedido> pedidos, ArrayList<Departamento> departamentos) {
+        for (Departamento d : departamentos) {
+            double valorTotalDepartamento = 0;
+            for (Pedido p : pedidos) {
+                if (verificaData(p.getDataPedido()) && p.getDepartamento().getIdentificador() == d.getIdentificador()) {
+                    valorTotalDepartamento += p.getValorTotal();
+                }
+            }
+            System.out.printf("Valor total do departamento %d nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
+        }
+    }
+
     public boolean verificaData(String dataPedido) {
         String[] pPedido = dataPedido.split("-");
 

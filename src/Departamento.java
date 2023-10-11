@@ -6,4 +6,8 @@ public class Departamento {
         this.identidicador = identidicador;
         this.nome = nome;
     }
+
+    public int getIdentificador() {
+        return identidicador;
+    }
 }
