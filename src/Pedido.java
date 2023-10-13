@@ -1,3 +1,5 @@
+package src;
+
 public class Pedido {
     private Funcionario funcionario;
     private String descricao;
