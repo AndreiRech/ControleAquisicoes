@@ -1,3 +1,5 @@
+package src;
+
 public class ItemDePedido {
     private String descricao;
     private double valor;
