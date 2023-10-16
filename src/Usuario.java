@@ -92,10 +92,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "identificador=" + identificador +
-                ", nome='" + nome + '\'' +
-                ", admin=" + admin +
-                '}';
+        return identificador + " - " + nome;
     }
 }
