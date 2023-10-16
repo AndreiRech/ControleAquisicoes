@@ -1,26 +1,40 @@
 package src;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Pedido {
     private Funcionario funcionario;
-    private String descricao;
-    private double valorTotal;
-    private boolean statusAprovacao;
-    private int status;
-    private String dataConclusao;
+    private Departamento departamento;
     private String dataPedido;
+    private String dataConclusao;
+    private StatusPedido status;
+    private List<ItemDePedido> itens;
+    private double valorTotal;
 
-    public Pedido(Funcionario funcionario, String descricao, double valorTotal, boolean statusAprovacao, int status, String dataConclusao, String dataPedido) {
+    public Pedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens,  double valorTotal) {
         this.funcionario = funcionario;
-        this.descricao = descricao;
-        this.valorTotal = valorTotal;
-        this.statusAprovacao = statusAprovacao;
-        this.status = status;
-        this.dataConclusao = dataConclusao;
+        this.departamento = departamento;
         this.dataPedido = dataPedido;
+        this.dataConclusao = null;
+        this.status = StatusPedido.ABERTO;
+        this.itens = new ArrayList<>();
+        this.valorTotal = valorTotal;
     }
 
-    public boolean getStatusAprovacao() {
-        return statusAprovacao;
+    public void adicionarItem(ItemDePedido item) {
+        itens.add(item);
+    }
+
+    public void setStatusAprovacao(StatusPedido status) {
+        this.status = status;
+    }
+
+    public void setDataConclusao(String dataConclusao) {
+        this.dataConclusao = dataConclusao;
+    }
+
+    public StatusPedido getStatus() {
+        return status;
     }
 
     public String getDataPedido() {
@@ -29,5 +43,22 @@ public class Pedido {
 
     public double getValorTotal() {
         return valorTotal;
+    }
+
+    public List<ItemDePedido> getItens() {
+        return itens;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "funcionario=" + funcionario +
+                ", departamento=" + departamento +
+                ", dataPedido='" + dataPedido + '\'' +
+                ", dataConclusao='" + dataConclusao + '\'' +
+                ", status=" + status +
+                ", itens=" + itens +
+                ", valorTotal=" + valorTotal +
+                '}';
     }
 }

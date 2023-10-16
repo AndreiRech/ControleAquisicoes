@@ -4,15 +4,26 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private int identificador;
     private String nome;
     private boolean admin;
+    private List<Pedido> pedidos;
 
     public Usuario(int identificador,String nome, boolean admin){
         this.identificador = identificador;
         this.nome = nome;
         this.admin = admin;
+        this.pedidos = new ArrayList<>();
+    }
+
+    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, StatusPedido status, List<ItemDePedido> itens, double valorTotal) {
+        Pedido novoPedido = new Pedido(funcionario, departamento, dataPedido, dataConclusao, itens, valorTotal);
+        pedidos.add(novoPedido);
+        System.out.println("Pedido registrado com sucesso. \nFuncionario responsável: " + funcionario + "\nDepartamento responsável: " + departamento + "\nData: " + dataPedido + "\nConclusão em: " + dataConclusao + "\nStatus: " + status + "\nItens: " + itens + "\nTotal: R$" + valorTotal);
+        return novoPedido;
     }
 
     public int getIdentificador() {
@@ -41,13 +52,13 @@ public class Usuario {
 
     public void contPedidos(ArrayList <Pedido> pedidos) {
         int qntTotal=0, qntAprovados=0, qntReprovados=0;
+
         for (Pedido p : pedidos) {
-            qntTotal++;
-            if (p.getStatusAprovacao()) {
-                qntAprovados++;
-            }
-            else {
-                qntReprovados++;
+            switch (p.getStatus()) {
+                case APROVADO -> qntAprovados++;
+                case REPROVADO -> qntReprovados++;
+                default -> {
+                }
             }
         }
 
@@ -55,6 +66,7 @@ public class Usuario {
         System.out.printf("Quantidade de pedidos aprovados : [%d] | [%.2f%%]\n", qntAprovados, ((double) qntAprovados/qntTotal)*100);
         System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntAprovados/qntReprovados)*100);
     }
+
 
     public double calculaMedia30(ArrayList <Pedido> pedidos, String dataAtual) {
         double valorTotal = 0, media = 0;
