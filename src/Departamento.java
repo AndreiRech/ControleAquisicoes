@@ -14,4 +14,8 @@ public class Departamento {
     public DepartamentoEnum getDepartamentoEnum() {
         return departamentoEnum;
     }
+
+    public int getIdentificador() {
+        return identidicador;
+    }
 }

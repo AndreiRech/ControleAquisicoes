@@ -74,6 +74,34 @@ public class Usuario {
         return media;
     }
 
+    public void totalDepartamento30(ArrayList<Pedido> pedidos, ArrayList<Departamento> departamentos) {
+        for (Departamento d : departamentos) {
+            double valorTotalDepartamento = 0;
+            for (Pedido p : pedidos) {
+                if (verificaData(p.getDataPedido()) && p.getDepartamento().getIdentificador() == d.getIdentificador()) {
+                    valorTotalDepartamento += p.getValorTotal();
+                }
+            }
+            System.out.printf("Valor total do departamento %d nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
+        }
+    }
+
+    public Pedido maiorPedidoAberto(ArrayList <Pedido> pedidos) {
+        Pedido maiorP = null;
+        double maiorV = 0;
+
+        for (Pedido p : pedidos) {
+            if (p.getStatusAprovacao()) {
+                if (maiorP == null || p.getValorTotal() > maiorV) {
+                    maiorP = p;
+                    maiorV = p.getValorTotal();
+                }
+            }
+        }
+
+        return maiorP;
+    }
+
     public boolean verificaData(String dataPedido) {
         String[] pPedido = dataPedido.split("-");
 
