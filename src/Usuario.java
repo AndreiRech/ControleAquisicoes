@@ -19,10 +19,10 @@ public class Usuario {
         this.pedidos = new ArrayList<>();
     }
 
-    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, StatusPedido status, List<ItemDePedido> itens, double valorTotal) {
-        Pedido novoPedido = new Pedido(funcionario, departamento, dataPedido, dataConclusao, itens, valorTotal);
+    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, boolean statusAprovacao, List<ItemDePedido> itens, double valorTotal, String descricao, StatusPedido statusPedido) {
+        Pedido novoPedido = new Pedido(funcionario, descricao, valorTotal, statusAprovacao, statusPedido, dataConclusao, dataPedido, departamento);
         pedidos.add(novoPedido);
-        System.out.println("Pedido registrado com sucesso. \nFuncionario responsável: " + funcionario + "\nDepartamento responsável: " + departamento + "\nData: " + dataPedido + "\nConclusão em: " + dataConclusao + "\nStatus: " + status + "\nItens: " + itens + "\nTotal: R$" + valorTotal);
+        System.out.println("Pedido registrado com sucesso. \nFuncionario responsável: " + funcionario + "\nDepartamento responsável: " + departamento + "\nData: " + dataPedido + "\nConclusão em: " + dataConclusao + "\nStatus: " + statusPedido + "\nItens: " + itens + "\nTotal: R$" + valorTotal);
         return novoPedido;
     }
 
@@ -84,6 +84,34 @@ public class Usuario {
         }
 
         return media;
+    }
+
+    public void totalDepartamento30(ArrayList<Pedido> pedidos, ArrayList<Departamento> departamentos) {
+        for (Departamento d : departamentos) {
+            double valorTotalDepartamento = 0;
+            for (Pedido p : pedidos) {
+                if (verificaData(p.getDataPedido()) && p.getDepartamento().getIdentificador() == d.getIdentificador()) {
+                    valorTotalDepartamento += p.getValorTotal();
+                }
+            }
+            System.out.printf("Valor total do departamento %d nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
+        }
+    }
+
+    public Pedido maiorPedidoAberto(ArrayList <Pedido> pedidos) {
+        Pedido maiorP = null;
+        double maiorV = 0;
+
+        for (Pedido p : pedidos) {
+            if (p.isStatusAprovacao()) {
+                if (maiorP == null || p.getValorTotal() > maiorV) {
+                    maiorP = p;
+                    maiorV = p.getValorTotal();
+                }
+            }
+        }
+
+        return maiorP;
     }
 
     public boolean verificaData(String dataPedido) {

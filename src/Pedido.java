@@ -5,13 +5,16 @@ import java.util.ArrayList;
 public class Pedido {
     private Funcionario funcionario;
     private Departamento departamento;
-    private String dataPedido;
-    private String dataConclusao;
-    private StatusPedido status;
-    private List<ItemDePedido> itens;
+    private String descricao;
     private double valorTotal;
 
-    public Pedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens,  double valorTotal) {
+    private boolean statusAprovacao;
+    private String dataConclusao;
+    private String dataPedido;
+    private StatusPedido status;
+    private List<ItemDePedido> itens;
+
+    public Pedido(Funcionario funcionario, String descricao, double valorTotal, boolean statusAprovacao, StatusPedido status, String dataConclusao, String dataPedido, Departamento departamento) {
         this.funcionario = funcionario;
         this.departamento = departamento;
         this.dataPedido = dataPedido;
@@ -31,6 +34,16 @@ public class Pedido {
 
     public void setDataConclusao(String dataConclusao) {
         this.dataConclusao = dataConclusao;
+        this.dataPedido = dataPedido;
+        this.departamento = departamento;
+    }
+
+    public boolean isStatusAprovacao() {
+        return statusAprovacao;
+    }
+
+    public void setStatusAprovacao(boolean statusAprovacao) {
+        this.statusAprovacao = statusAprovacao;
     }
 
     public StatusPedido getStatus() {
@@ -61,4 +74,9 @@ public class Pedido {
                 ", valorTotal=" + valorTotal +
                 '}';
     }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
 }
