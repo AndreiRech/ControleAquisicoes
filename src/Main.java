@@ -19,15 +19,17 @@ public class Main {
             for (ItemDePedido item : itens){
                 valorTotal += item.getValor()*item.getQuantidade();
             }
-            Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
-            listaPedidos.add(novoPedido);
-            System.out.println(novoPedido);
-            System.out.println("Pedido registrado");
+            if (valorTotal<=departamento.getDepartamentoEnum().getValorMaximoPedido()) {
+                Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
+                listaPedidos.add(novoPedido);
+                System.out.println(novoPedido);
+                System.out.println("Pedido registrado");
+            }else{
+                System.out.println("Valor máximo por departamento excedido.");
+            }
         }else{
             System.out.println("Usuário não pode ser admin");
         }
-
-
     }
 
     public static void selecionaUsuario(Scanner scan) {

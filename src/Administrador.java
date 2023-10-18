@@ -15,7 +15,6 @@ public class Administrador extends Usuario {
     public void listarPedidos(String dataInicial, String dataFinal, List<Pedido> listaPedidos) {
         List<Pedido> pedidosEntreDatas = new ArrayList<>();
         for (Pedido pedido : listaPedidos) {
-            String dataPedido = pedido.getDataPedido();
 
             if (dataInicial.equals(pedido.getDataPedido()) && dataFinal.equals(pedido.getDataConclusao())) {
                 pedidosEntreDatas.add(pedido);

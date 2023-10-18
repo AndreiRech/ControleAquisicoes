@@ -60,7 +60,7 @@ public class InicializadorDados {
         ArrayList<ItemDePedido> itens = new ArrayList<>();
         itens.add(new ItemDePedido("Negrinho", 2.50, 50));
         itens.add(new ItemDePedido("Branquinho", 2, 50));
-        itens.add(new ItemDePedido("Bolo", 100, 1));
+        itens.add(new ItemDePedido("Enfeite de Bolo Revestido em Ouro", 7500, 1));
         itens.add(new ItemDePedido("Pastelzinho de Carne", 4, 50));
         itens.add(new ItemDePedido("Pastelzinho de Frango", 3, 50));
 
