@@ -12,9 +12,9 @@ public class Administrador extends Usuario {
         return true;
     }
 
-    public void listarPedidos(String dataInicial, String dataFinal) {
+    public void listarPedidos(String dataInicial, String dataFinal, List<Pedido> listaPedidos) {
         List<Pedido> pedidosEntreDatas = new ArrayList<>();
-        for (Pedido pedido : pedidos) {
+        for (Pedido pedido : listaPedidos) {
             String dataPedido = pedido.getDataPedido();
 
             if (dataInicial.equals(pedido.getDataPedido()) && dataFinal.equals(pedido.getDataConclusao())) {
@@ -26,9 +26,9 @@ public class Administrador extends Usuario {
             System.out.println("Não foram efetuados pedidos nesse período.");
     }
 
-    public void buscaPorFuncionario(int id) {
+    public void buscaPorFuncionario(int id, List<Pedido> listaPedidos) {
         List<Pedido> pedidosDoFuncionario = new ArrayList<>();
-        for (Pedido pedido : pedidos) {
+        for (Pedido pedido : listaPedidos) {
             if (pedido.getFuncionario().getIdentificador()==id){
                 pedidosDoFuncionario.add(pedido);
                 System.out.println(pedido);
@@ -38,9 +38,9 @@ public class Administrador extends Usuario {
             System.out.println("Nenhum pedido foi registrado por esse funcionário.");
     }
 
-    public List<Pedido> buscaPorDescricao(String descricaoItem) {
+    public void buscaPorDescricao(String descricaoItem, List<Pedido> listaPedidos) {
         List<Pedido> pedidosComDescricaoItem = new ArrayList<>();
-        for (Pedido pedido : pedidos) {
+        for (Pedido pedido : listaPedidos) {
             for (ItemDePedido item : pedido.getItens()) {
                 if (item.getDescricao().equalsIgnoreCase(descricaoItem)) {
                     pedidosComDescricaoItem.add(pedido);
@@ -51,7 +51,9 @@ public class Administrador extends Usuario {
         if(pedidosComDescricaoItem.isEmpty())
             System.out.println("Não há nenhum pedido com essa descrição.");
 
-        return pedidosComDescricaoItem;
+        for (Pedido pedido : pedidosComDescricaoItem){
+            System.out.println(pedido);
+        }
     }
 
     public void visualizaPedido(Pedido pedido) {

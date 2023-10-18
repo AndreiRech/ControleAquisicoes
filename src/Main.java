@@ -6,7 +6,29 @@ public class Main {
 
     public static List<ItemDePedido> itens = new ArrayList<>();
 
+    protected static List<Pedido> listaPedidos = new ArrayList<>();
+
     public static Usuario usuarioAtual = new Usuario(0, "Visitante", false, null);
+
+    public static void registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
+        if(!funcionario.isAdmin()){
+            Random random = new Random();
+            int numeroPedido = random.nextInt(1000000);
+            double valorTotal = 0;
+            StatusPedido status = StatusPedido.ABERTO;
+            for (ItemDePedido item : itens){
+                valorTotal += item.getValor()*item.getQuantidade();
+            }
+            Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
+            listaPedidos.add(novoPedido);
+            System.out.println(novoPedido);
+            System.out.println("Pedido registrado");
+        }else{
+            System.out.println("Usuário não pode ser admin");
+        }
+
+
+    }
 
     public static void selecionaUsuario(Scanner scan) {
         int id = 0;
@@ -96,7 +118,7 @@ public class Main {
                     String data2 = scan.next();
                     System.out.println("Digite o identificador do funcionário responsável: ");
                     int id = scan.nextInt();
-                    usuarioAtual.registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
+                    registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
                     break;
                 default:
                     break;
@@ -140,29 +162,29 @@ public class Main {
                     String data2 = scan.next();
                     System.out.println("Digite o identificador do funcionário responsável: ");
                     id = scan.nextInt();
-                    usuarioAtual.registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
+                    registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
                     break;
                 case 3:
                     System.out.println("Digite a data inicial(00-00-00): ");
                     String datai = scan.next();
                     System.out.println("Digite a data final(00-00-00): ");
                     String dataf = scan.next();
-                    admin.listarPedidos(datai, dataf);
+                    admin.listarPedidos(datai, dataf, listaPedidos);
                     break;
                 case 4:
                     System.out.println("Digite o identificador do funcionário solicitante: ");
                     id = scan.nextInt();
-                    admin.buscaPorFuncionario(id);
+                    admin.buscaPorFuncionario(id, listaPedidos);
                     break;
                 case 5:
-                    System.out.println("Digite a descrição do pedido: ");
+                    System.out.println("Digite a descrição do item que deseja buscar: ");
                     String desc = scan.next();
-                    admin.buscaPorDescricao(desc);
+                    admin.buscaPorDescricao(desc, listaPedidos);
                    break;
                 case 6:
                     System.out.println("Digite o numero do pedido que deseja visualizar: ");
                     int num = scan.nextInt();
-                    admin.visualizaPedido(admin.buscaPedido(num));
+                    admin.visualizaPedido(admin.buscaPedido(num, listaPedidos));
                 default:
                     break;
             }

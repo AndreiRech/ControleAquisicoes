@@ -14,31 +14,17 @@ public class Usuario {
     protected boolean admin;
 
     protected Departamento departamento;
-    protected List<Pedido> pedidos;
 
     public Usuario(int identificador, String nome, boolean admin, Departamento departamento) {
         this.identificador = identificador;
         this.nome = nome;
         this.admin = admin;
         this.departamento = departamento;
-        this.pedidos = new ArrayList<>();
     }
 
-    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
-        Random random = new Random();
-        int numeroPedido = random.nextInt(1000000);
-        double valorTotal = 0;
-        StatusPedido status = StatusPedido.ABERTO;
-        for (ItemDePedido item : itens){
-           valorTotal += item.getValor()*item.getQuantidade();
-        }
-        Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
-        pedidos.add(novoPedido);
-        System.out.println(novoPedido);
-        return novoPedido;
-    }
 
-    public Pedido buscaPedido(int numeroPedido) {
+
+    public Pedido buscaPedido(int numeroPedido, List<Pedido> pedidos) {
         for (Pedido pedido : pedidos) {
             if (pedido.getNumeroPedido() == numeroPedido) {
                 return pedido;
