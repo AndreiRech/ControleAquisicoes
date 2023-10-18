@@ -3,7 +3,23 @@ import java.util.*;
 
 public class Main {
     public static List<Usuario> listaUsuarios = new ArrayList<>();
+    public static List<Pedido> listaPedidos = new ArrayList<>();
     public static Usuario usuarioAtual = null;
+
+    public static void removePedidoPorId(int id, Funcionario funcionario){
+        Optional<Pedido> pedidoFiltrado = listaPedidos.stream().filter(pedido -> pedido.getId() == id).findFirst();
+        if(pedidoFiltrado.isPresent()){
+            if(pedidoFiltrado.get().getFuncionario().equals(funcionario)){
+                listaPedidos.remove(pedidoFiltrado.get());
+                System.out.println("Pedido excluido com sucesso");
+            }else{
+                System.out.println("Pedido só pode ser excluido por seu criador");
+            }
+        }
+        else{
+            System.out.println("Pedido não encontrado");
+        }
+    }
 
     public static void selecionaUsuario(Scanner scan){
         int id = 0;
