@@ -6,10 +6,12 @@ public class Main {
     public static List<Pedido> listaPedidos = new ArrayList<>();
     public static Usuario usuarioAtual = null;
 
-    public static void removePedidoPorId(int id, Funcionario funcionario){
+    public static void removePedidoPorId(){
+        Scanner scan = new Scanner(System.in);
+        int id = scan.nextInt();
         Optional<Pedido> pedidoFiltrado = listaPedidos.stream().filter(pedido -> pedido.getId() == id).findFirst();
         if(pedidoFiltrado.isPresent()){
-            if(pedidoFiltrado.get().getFuncionario().equals(funcionario)){
+            if(pedidoFiltrado.get().getFuncionario().getIdentificador() == usuarioAtual.getIdentificador()){
                 listaPedidos.remove(pedidoFiltrado.get());
                 System.out.println("Pedido excluido com sucesso");
             }else{
@@ -55,6 +57,7 @@ public class Main {
                 System.out.println("USUÁRIO ATUAL: "+usuarioAtual.getIdentificador()+ " - " + usuarioAtual.getNome());
             }
             System.out.println("1 - Selecionar usuário");
+            System.out.println("5 - Excluir pedido por id");
             System.out.println("0 - Sair do programa");
 
             System.out.println();
@@ -65,6 +68,8 @@ public class Main {
             switch(opcao){
                 case 1:
                     selecionaUsuario(scan);
+                case 5:
+                    removePedidoPorId();
                     break;
                 default:
                     break;
