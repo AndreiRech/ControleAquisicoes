@@ -1,9 +1,13 @@
 package src;
+import src.utils.Utils;
+
 import java.util.*;
 
 public class Main {
     public static List<Usuario> listaUsuarios = new ArrayList<>();
     public static Usuario usuarioAtual = null;
+
+    public static List<Pedido> listaPedidos = new ArrayList<>();
 
     public static void selecionaUsuario(Scanner scan){
         int id = 0;
@@ -28,6 +32,41 @@ public class Main {
             System.out.println("Usuário não encontrado!");
         }
 
+    }
+
+    public static void relatorioPedidos() {
+        int qntTotal=0, qntAprovados=0, qntReprovados=0;
+        for (Pedido p : listaPedidos) {
+            qntTotal++;
+            if (p.getStatusAprovacao()) {
+                qntAprovados++;
+            }
+            else {
+                qntReprovados++;
+            }
+        }
+
+        System.out.printf("Quantidade de pedidos : [%d]\n", qntTotal);
+        System.out.printf("Quantidade de pedidos aprovados : [%d] | [%.2f%%]\n", qntAprovados, ((double) qntAprovados/qntTotal)*100);
+        System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntAprovados/qntReprovados)*100);
+    }
+
+    public static double calculaMediaUltimosPedidos() {
+        double valorTotal = 0, media = 0;
+        int quantidade = 0;
+
+        for (Pedido p : listaPedidos) {
+            if(Utils.verificaData(p.getDataPedido())) {
+                quantidade++;
+                valorTotal += p.getValorTotal();
+            }
+        }
+
+        if (quantidade > 0) {
+            media = valorTotal / quantidade;
+        }
+
+        return media;
     }
 
     public static void Menu(){
