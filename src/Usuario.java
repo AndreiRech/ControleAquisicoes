@@ -5,25 +5,46 @@ import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Random;
 
 public class Usuario {
     private int identificador;
     private String nome;
-    private boolean admin;
-    private List<Pedido> pedidos;
+    protected boolean admin;
 
-    public Usuario(int identificador,String nome, boolean admin){
+    protected Departamento departamento;
+    protected List<Pedido> pedidos;
+
+    public Usuario(int identificador, String nome, boolean admin, Departamento departamento) {
         this.identificador = identificador;
         this.nome = nome;
         this.admin = admin;
+        this.departamento = departamento;
         this.pedidos = new ArrayList<>();
     }
 
-    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, StatusPedido status, List<ItemDePedido> itens, double valorTotal) {
-        Pedido novoPedido = new Pedido(funcionario, departamento, dataPedido, dataConclusao, itens, valorTotal);
+    public Pedido registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
+        Random random = new Random();
+        int numeroPedido = random.nextInt(1000000);
+        double valorTotal = 0;
+        StatusPedido status = StatusPedido.ABERTO;
+        for (ItemDePedido item : itens){
+           valorTotal += item.getValor()*item.getQuantidade();
+        }
+        Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
         pedidos.add(novoPedido);
-        System.out.println("Pedido registrado com sucesso. \nFuncionario responsável: " + funcionario + "\nDepartamento responsável: " + departamento + "\nData: " + dataPedido + "\nConclusão em: " + dataConclusao + "\nStatus: " + status + "\nItens: " + itens + "\nTotal: R$" + valorTotal);
+        System.out.println(novoPedido);
         return novoPedido;
+    }
+
+    public Pedido buscaPedido(int numeroPedido) {
+        for (Pedido pedido : pedidos) {
+            if (pedido.getNumeroPedido() == numeroPedido) {
+                return pedido;
+            }
+        }
+        return null;
     }
 
     public int getIdentificador() {
@@ -42,12 +63,8 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public Departamento getDepartamento() {
+        return departamento;
     }
 
     public void contPedidos(ArrayList <Pedido> pedidos) {
@@ -100,6 +117,19 @@ public class Usuario {
 
 
         return dias <= 30;
+    }
+
+    public Funcionario buscarFuncionario(int id, List<Usuario> usuarios) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getIdentificador() == id) {
+                return new Funcionario(usuario);
+            }
+        }
+        return null;
+    }
+
+    public boolean getAdmin() {
+        return admin;
     }
 
     @Override

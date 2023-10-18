@@ -11,14 +11,17 @@ public class Pedido {
     private List<ItemDePedido> itens;
     private double valorTotal;
 
-    public Pedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens,  double valorTotal) {
+    private int numeroPedido;
+
+    public Pedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, StatusPedido status, List<ItemDePedido> itens,  double valorTotal, int numeroPedido) {
         this.funcionario = funcionario;
         this.departamento = departamento;
         this.dataPedido = dataPedido;
-        this.dataConclusao = null;
-        this.status = StatusPedido.ABERTO;
-        this.itens = new ArrayList<>();
+        this.dataConclusao = dataConclusao;
+        this.status = status;
+        this.itens = itens;
         this.valorTotal = valorTotal;
+        this.numeroPedido = numeroPedido;
     }
 
     public void adicionarItem(ItemDePedido item) {
@@ -41,24 +44,37 @@ public class Pedido {
         return dataPedido;
     }
 
+    public String getDataConclusao() {
+        return dataConclusao;
+    }
+
     public double getValorTotal() {
         return valorTotal;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public int getNumeroPedido() {
+        return numeroPedido;
     }
 
     public List<ItemDePedido> getItens() {
         return itens;
     }
 
+
     @Override
     public String toString() {
-        return "Pedido{" +
-                "funcionario=" + funcionario +
-                ", departamento=" + departamento +
-                ", dataPedido='" + dataPedido + '\'' +
-                ", dataConclusao='" + dataConclusao + '\'' +
-                ", status=" + status +
-                ", itens=" + itens +
-                ", valorTotal=" + valorTotal +
-                '}';
+        return "==== DETALHES DO PEDIDO #" + numeroPedido +" ====" +
+                "\nFUNCIONÁRIO RESPONSÁVEL: " + funcionario.getIdentificador() + " - " + funcionario.getNome() +
+                "\nDEPARTAMENTO RESPONSÁVEL: " + departamento +
+                "\nDATA DO PEDIDO: " + dataPedido +
+                "\nDATA/PREVISÃO DE CONCLUSÃO: " + dataConclusao +
+                "\nSTATUS: " + status +
+                "\nITENS: " + itens +
+                "\nTOTAL DO PEDIDO: R$" + valorTotal +
+                "\n============================";
     }
 }

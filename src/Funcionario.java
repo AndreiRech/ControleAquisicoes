@@ -1,18 +1,24 @@
 package src;
 
-public class Funcionario extends Usuario{
-    private Departamento departamento;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Funcionario(int identificador, String nome, boolean admin, Departamento departamento) {
-        super(identificador, nome, admin);
-        this.departamento = departamento;
+public class Funcionario extends Usuario{
+
+    public Funcionario(Usuario usuario) {
+        super(usuario.getIdentificador(), usuario.getNome(), false, usuario.getDepartamento());
+    }
+
+
+
+    public boolean isAdmin(){
+        return false;
     }
 
     public String toString(){
-        return "Funcionario{" +
-                ", departamento=" + departamento +
-                ", identificador=" + getIdentificador() +
-                ", nome=" + getNome() +
-                ", admin=" + isAdmin();
+        return "Funcionario: " + getNome() +
+                "\nDepartamento=" + getDepartamento() +
+                "\nIdentificador=" + getIdentificador() +
+                "\nPermissão de administrador: " + isAdmin();
     }
 }

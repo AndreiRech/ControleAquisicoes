@@ -7,37 +7,34 @@ import java.util.Map;
 
 public class InicializadorDados {
 
-    public static List<Funcionario> inicializacaoFuncionarios(){
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
-
+    public static List<Usuario> inicializacaoUsuarios(){
+        ArrayList<Usuario> usuarios = new ArrayList<>();
         Map<String, Departamento> departamentos = inicializacaoDepartamentos();
 
 
-        //inicializacao dos funcionarios
-
-        funcionarios.add(new Funcionario(1, "Rogerio", false, departamentos.get("Financeiro")));
-        funcionarios.add(new Funcionario(2, "Claudia",true, departamentos.get("Financeiro")));
-        funcionarios.add(new Funcionario(3, "Fernando",false, departamentos.get("Financeiro")));
-        funcionarios.add(new Funcionario(4, "Felisberto",false, departamentos.get("RH")));
-        funcionarios.add(new Funcionario(5, "Rosangela", true, departamentos.get("RH")));
-        funcionarios.add(new Funcionario(6, "Maria Claudia",false, departamentos.get("RH")));
-        funcionarios.add(new Funcionario(7, "Robson", false, departamentos.get("Engenharia")));
-        funcionarios.add(new Funcionario(8, "Juliano",true, departamentos.get("Engenharia")));
-        funcionarios.add(new Funcionario(9, "Rafela",false, departamentos.get("Engenharia")));
-        funcionarios.add(new Funcionario(10, "Luiza",false, departamentos.get("Manutancao")));
-        funcionarios.add(new Funcionario(11, "Sibely",true, departamentos.get("Manutancao")));
-        funcionarios.add(new Funcionario(12, "Shirley",false, departamentos.get("Manutancao")));
-        funcionarios.add(new Funcionario(13, "Sonia", false, departamentos.get("Vendas")));
-        funcionarios.add(new Funcionario(14, "Marcelo",true, departamentos.get("Vendas")));
-        funcionarios.add(new Funcionario(15, "Roberto",false, departamentos.get("Vendas")));
-        funcionarios.add(new Funcionario(16, "Ricardo",false, departamentos.get("TI")));
-        funcionarios.add(new Funcionario(17, "Eduardo",true, departamentos.get("TI")));
-        funcionarios.add(new Funcionario(18, "Bruno", false, departamentos.get("TI")));
-        funcionarios.add(new Funcionario(19, "Afonso",false, departamentos.get("Marketing")));
-        funcionarios.add(new Funcionario(20, "Pedro",true, departamentos.get("Marketing")));
-        funcionarios.add(new Funcionario(21, "Abraao",false, departamentos.get("Marketing")));
-
-        return funcionarios;
+        //inicializacao dos usuários
+        usuarios.add(new Usuario(1, "Rogerio", false, departamentos.get("Financeiro")));
+        usuarios.add(new Usuario(2, "Claudia", true, null));
+        usuarios.add(new Usuario(3, "Fernando", false, departamentos.get("Financeiro")));
+        usuarios.add(new Usuario(4, "Felisberto", false, departamentos.get("RH")));
+        usuarios.add(new Usuario(5, "Rosangela", true, null));
+        usuarios.add(new Usuario(6, "Maria Claudia", false, departamentos.get("RH")));
+        usuarios.add(new Usuario(7, "Robson", false, departamentos.get("Engenharia")));
+        usuarios.add(new Usuario(8, "Juliano", true, null));
+        usuarios.add(new Usuario(9, "Rafela", false, departamentos.get("Engenharia")));
+        usuarios.add(new Usuario(10, "Luiza", false, departamentos.get("Manutencao")));
+        usuarios.add(new Usuario(11, "Sibely", true, null));
+        usuarios.add(new Usuario(12, "Shirley", false, departamentos.get("Manutencao")));
+        usuarios.add(new Usuario(13, "Sonia",  false, departamentos.get("Vendas")));
+        usuarios.add(new Usuario(14, "Marcelo", true, null));
+        usuarios.add(new Usuario(15, "Roberto", false, departamentos.get("Vendas")));
+        usuarios.add(new Usuario(16, "Ricardo", false, departamentos.get("TI")));
+        usuarios.add(new Usuario(17, "Eduardo", true, null));
+        usuarios.add(new Usuario(18, "Bruno", false, departamentos.get("TI")));
+        usuarios.add(new Usuario(19, "Afonso", false, departamentos.get("Marketing")));
+        usuarios.add(new Usuario(20, "Pedro", true, null));
+        usuarios.add(new Usuario(21, "Abraao", false, departamentos.get("Marketing")));
+        return usuarios;
 
     }
 
@@ -57,6 +54,17 @@ public class InicializadorDados {
 
         return departamentos;
 
+    }
+
+    public static List<ItemDePedido> inicializaçãoItensDePedido(){
+        ArrayList<ItemDePedido> itens = new ArrayList<>();
+        itens.add(new ItemDePedido("Negrinho", 2.50, 50));
+        itens.add(new ItemDePedido("Branquinho", 2, 50));
+        itens.add(new ItemDePedido("Bolo", 100, 1));
+        itens.add(new ItemDePedido("Pastelzinho de Carne", 4, 50));
+        itens.add(new ItemDePedido("Pastelzinho de Frango", 3, 50));
+
+        return itens;
     }
 
 
