@@ -16,6 +16,6 @@ public class Departamento {
     }
 
     public int getIdentificador() {
-        return identidicador;
+        return identificador;
     }
 }
