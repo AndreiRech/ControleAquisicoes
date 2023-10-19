@@ -113,6 +113,7 @@ public class Main {
     }
 
     public static void removePedidoPorId(){
+        System.out.println("Digite o id do pedido a ser removido");
         Scanner scan = new Scanner(System.in);
         int id = scan.nextInt();
         Optional<Pedido> pedidoFiltrado = listaPedidos.stream().filter(pedido -> pedido.getId() == id).findFirst();
