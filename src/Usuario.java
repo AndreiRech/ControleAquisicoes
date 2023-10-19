@@ -8,14 +8,11 @@ import java.util.List;
 public class Usuario {
     private int identificador;
     private String nome;
-    protected boolean admin;
-
     protected Departamento departamento;
 
-    public Usuario(int identificador, String nome, boolean admin, Departamento departamento) {
+    public Usuario(int identificador, String nome, Departamento departamento) {
         this.identificador = identificador;
         this.nome = nome;
-        this.admin = admin;
         this.departamento = departamento;
     }
 
@@ -109,10 +106,6 @@ public class Usuario {
             }
         }
         return null;
-    }
-
-    public boolean getAdmin() {
-        return admin;
     }
 
     @Override

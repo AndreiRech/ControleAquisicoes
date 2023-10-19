@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Administrador extends Usuario {
-    public Administrador(Usuario usuario) {
-        super(usuario.getIdentificador(), usuario.getNome(), true, null);
+    public Administrador(int identificador, String nome) {
+        super(identificador, nome, null);
     }
 
     public boolean isAdmin() {

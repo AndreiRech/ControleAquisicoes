@@ -10,7 +10,7 @@ public class Main {
 
     protected static List<Pedido> listaPedidos = new ArrayList<>();
 
-    public static Usuario usuarioAtual = new Usuario(0, "Visitante", false, null);
+    public static Usuario usuarioAtual = new Usuario(0, "Visitante", null);
 
     public static void registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
         if(!funcionario.isAdmin()){
@@ -154,15 +154,15 @@ public class Main {
             System.out.println("Usuário não encontrado!");
         } else {
             // Após selecionar o novo usuário, verifique se ele é um administrador.
-            if (usuarioAtual.getAdmin()) {
+            if (usuarioAtual instanceof Administrador) {
                 menuAdmin();
             } else {
-                MenuFuncionario();
+                menuFuncionario();
             }
         }
     }
 
-    public static void Menu(){
+    public static void menu(){
         Scanner scan = new Scanner(System.in);
         int opcao = 1;
 
@@ -185,7 +185,7 @@ public class Main {
                 break;
         }
     }
-    public static void MenuFuncionario(){
+    public static void menuFuncionario(){
         Scanner scan = new Scanner(System.in);
         int opcao = 1;
 
@@ -226,20 +226,20 @@ public class Main {
                 default:
                     break;
             }
-        }while(!usuarioAtual.getAdmin());
+        }while(!(usuarioAtual instanceof Administrador));
     }
 
     public static void menuAdmin(){
         Scanner scan = new Scanner(System.in);
         int opcao = 1;
         int id = 0;
-        Administrador admin = new Administrador(usuarioAtual);
+
+        Administrador admin = new Administrador(usuarioAtual.getIdentificador(), usuarioAtual.getNome());
 
         while(opcao !=0){
             System.out.println("===MENU DE ADMINISTRADOR===");
 
             System.out.println("USUÁRIO ATUAL: "+usuarioAtual.getIdentificador()+ " - " + usuarioAtual.getNome());
-
 
             System.out.println("1 - Trocar usuário");
             System.out.println("2 - Registrar novo pedido");
@@ -263,10 +263,12 @@ public class Main {
                     String data1 = scan.next();
                     System.out.println("Digite a data de conclusão Pedido (00-00-00): ");
                     String data2 = scan.next();
+
                     System.out.println("Digite o identificador do funcionário responsável: ");
                     id = scan.nextInt();
                     registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
                     break;
+
                 case 3:
                     System.out.println("Digite a data inicial(00-00-00): ");
                     String datai = scan.next();
@@ -283,13 +285,15 @@ public class Main {
                     System.out.println("Digite a descrição do item que deseja buscar: ");
                     String desc = scan.next();
                     admin.buscaPorDescricao(desc, listaPedidos);
-                   break;
+                    break;
                 case 6:
                     System.out.println("Digite o numero do pedido que deseja visualizar: ");
                     int num = scan.nextInt();
                     admin.visualizaPedido(admin.buscaPedido(num, listaPedidos));
+                    break;
                 case 7:
                     removePedidoPorId();
+                    break;
                 default:
                     break;
             }
@@ -299,12 +303,12 @@ public class Main {
         List<Usuario> usuarios = InicializadorDados.inicializacaoUsuarios();
         listaUsuarios.addAll(usuarios);
 
-        List<ItemDePedido> itensDePedido = InicializadorDados.inicializaçãoItensDePedido();
+        List<ItemDePedido> itensDePedido = InicializadorDados.inicializacaoItensDePedido();
         itens.addAll(itensDePedido);
 
         Map<String, Departamento> departamentos = InicializadorDados.inicializacaoDepartamentos();
 
-        Menu();
+        menu();
 
         double valorMaximo = departamentos.get("Financeiro").getDepartamentoEnum().getValorMaximoPedido();
         System.out.println(valorMaximo);

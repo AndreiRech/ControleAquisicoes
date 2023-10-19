@@ -6,10 +6,8 @@ import java.util.List;
 public class Funcionario extends Usuario{
 
     public Funcionario(Usuario usuario) {
-        super(usuario.getIdentificador(), usuario.getNome(), false, usuario.getDepartamento());
+        super(usuario.getIdentificador(), usuario.getNome(), usuario.getDepartamento());
     }
-
-
 
     public boolean isAdmin(){
         return false;
