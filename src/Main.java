@@ -1,4 +1,6 @@
 package src;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Main {
@@ -15,7 +17,6 @@ public class Main {
             Random random = new Random();
             int numeroPedido = random.nextInt(1000000);
             double valorTotal = 0;
-            StatusPedido status = StatusPedido.ABERTO;
             for (ItemDePedido item : itens){
                 valorTotal += item.getValor()*item.getQuantidade();
             }
@@ -32,7 +33,103 @@ public class Main {
         }
     }
 
-    public static void selecionaUsuario(Scanner scan) {
+    public static void contPedidos(ArrayList <Pedido> pedidos) {
+        int qntTotal=0, qntAprovados=0, qntReprovados=0;
+        for (Pedido p : pedidos) {
+            qntTotal++;
+            if (p.getStatus()  == StatusPedido.APROVADO) {
+                qntAprovados++;
+            }
+            else if(p.getStatus()  == StatusPedido.REPROVADO) {
+                qntReprovados++;
+            }
+        }
+
+        System.out.printf("Quantidade de pedidos : [%d]\n", qntTotal);
+        System.out.printf("Quantidade de pedidos aprovados : [%d] | [%.2f%%]\n", qntAprovados, ((double) qntAprovados/qntTotal)*100);
+        System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntAprovados/qntReprovados)*100);
+    }
+
+    public static double calculaMedia30(ArrayList <Pedido> pedidos, String dataAtual) {
+        double valorTotal = 0, media = 0;
+        int quantidade = 0;
+
+        for (Pedido p : pedidos) {
+            if(verificaData(p.getDataPedido())) {
+                quantidade++;
+                valorTotal += p.getValorTotal();
+            }
+        }
+
+        if (quantidade > 0) {
+            media = valorTotal / quantidade;
+        }
+
+        return media;
+    }
+
+    public static void totalDepartamento30(ArrayList<Pedido> pedidos, ArrayList<Departamento> departamentos) {
+        for (Departamento d : departamentos) {
+            double valorTotalDepartamento = 0;
+            for (Pedido p : pedidos) {
+                if (verificaData(p.getDataPedido()) && p.getDepartamento().getIdentificador() == d.getIdentificador()) {
+                    valorTotalDepartamento += p.getValorTotal();
+                }
+            }
+            System.out.printf("Valor total do departamento %d nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
+        }
+    }
+
+    public static Pedido maiorPedidoAberto(ArrayList <Pedido> pedidos) {
+        Pedido maiorP = null;
+        double maiorV = 0;
+
+        for (Pedido p : pedidos) {
+            if (p.getStatus() == StatusPedido.APROVADO) {
+                if (maiorP == null || p.getValorTotal() > maiorV) {
+                    maiorP = p;
+                    maiorV = p.getValorTotal();
+                }
+            }
+        }
+
+        return maiorP;
+    }
+
+    public static boolean verificaData(String dataPedido) {
+        String[] pPedido = dataPedido.split("-");
+
+        int anoPedido = Integer.parseInt(pPedido[2]);
+        int mesPedido = Integer.parseInt(pPedido[1]);
+        int diaPedido = Integer.parseInt(pPedido[0]);
+
+        LocalDate dtDataPedido = LocalDate.of(anoPedido, mesPedido, diaPedido);
+        LocalDate dtDataAtual = LocalDate.now();
+
+        long dias = ChronoUnit.DAYS.between(dtDataPedido, dtDataAtual);
+
+
+        return dias <= 30;
+    }
+
+    public static void removePedidoPorId(){
+        Scanner scan = new Scanner(System.in);
+        int id = scan.nextInt();
+        Optional<Pedido> pedidoFiltrado = listaPedidos.stream().filter(pedido -> pedido.getId() == id).findFirst();
+        if(pedidoFiltrado.isPresent()){
+            if(pedidoFiltrado.get().getFuncionario().getIdentificador() == usuarioAtual.getIdentificador()){
+                listaPedidos.remove(pedidoFiltrado.get());
+                System.out.println("Pedido excluido com sucesso");
+            }else{
+                System.out.println("Pedido só pode ser excluido por seu criador");
+            }
+        }
+        else{
+            System.out.println("Pedido não encontrado");
+        }
+    }
+
+    public static void selecionaUsuario(Scanner scan){
         int id = 0;
 
         System.out.println("=======SELEÇÃO DE USUÁRIO========");
@@ -89,7 +186,6 @@ public class Main {
     }
     public static void MenuFuncionario(){
         Scanner scan = new Scanner(System.in);
-        Funcionario f = new Funcionario(usuarioAtual);
         int opcao = 1;
 
         do {
@@ -102,6 +198,7 @@ public class Main {
 
             System.out.println("1 - Selecionar usuário");
             System.out.println("2 - Registrar novo pedido");
+            System.out.println("3 - Remover pedido");
             System.out.println("0 - Sair do programa");
 
             System.out.println();
@@ -121,6 +218,9 @@ public class Main {
                     System.out.println("Digite o identificador do funcionário responsável: ");
                     int id = scan.nextInt();
                     registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
+                    break;
+                case 3:
+                    removePedidoPorId();
                     break;
                 default:
                     break;
@@ -146,6 +246,7 @@ public class Main {
             System.out.println("4 - Buscar pedidos por funcionário solicitante");
             System.out.println("5 - Buscar pedidos pela descrição de um item");
             System.out.println("6 - Visualizar os detalhes de um pedido para aprová-lo ou rejeitá-lo");
+            System.out.println("7 - Remover pedido");
             System.out.println("0 - Sair do programa");
 
             System.out.println();
@@ -156,7 +257,6 @@ public class Main {
             switch(opcao){
                 case 1:
                     selecionaUsuario(scan);
-                    break;
                 case 2:
                     System.out.println("Digite a data do Pedido (00-00-00): ");
                     String data1 = scan.next();
@@ -187,6 +287,8 @@ public class Main {
                     System.out.println("Digite o numero do pedido que deseja visualizar: ");
                     int num = scan.nextInt();
                     admin.visualizaPedido(admin.buscaPedido(num, listaPedidos));
+                case 7:
+                    removePedidoPorId();
                 default:
                     break;
             }

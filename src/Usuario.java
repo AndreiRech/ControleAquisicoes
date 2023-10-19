@@ -1,12 +1,9 @@
 package src;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Random;
 
 public class Usuario {
     private int identificador;

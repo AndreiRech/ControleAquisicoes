@@ -1,8 +1,8 @@
 package src;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Pedido {
+    private static int id = 0;
     private Funcionario funcionario;
     private Departamento departamento;
     private String dataPedido;
@@ -32,6 +32,10 @@ public class Pedido {
         this.status = status;
     }
 
+    public Departamento getDepartamento() {
+        return this.departamento;
+    }
+
     public void setDataConclusao(String dataConclusao) {
         this.dataConclusao = dataConclusao;
     }
@@ -39,6 +43,10 @@ public class Pedido {
     public StatusPedido getStatus() {
         return status;
     }
+
+    public int getId(){
+        return this.id;
+    };
 
     public String getDataPedido() {
         return dataPedido;
