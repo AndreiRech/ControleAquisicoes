@@ -12,16 +12,14 @@ public class Main {
 
     public static Usuario usuarioAtual = new Usuario(0, "Visitante", null);
 
-    public static int[] adminIds = new int[7];
+    public static ArrayList<Integer> adminIds = new ArrayList<>();
 
-    public static void registraAdminIds(int[] adminIds){
-        adminIds[0] = 2;
-        adminIds[1] = 5;
-        adminIds[2] = 8;
-        adminIds[3] = 11;
-        adminIds[4] = 14;
-        adminIds[5] = 17;
-        adminIds[6] = 20;
+    public static void registraAdminIds(ArrayList<Integer> adminIds){
+        for(int i=0; i<listaUsuarios.size(); i++){
+            if(listaUsuarios.get(i) instanceof Administrador){
+                adminIds.add(listaUsuarios.get(i).getIdentificador());
+            }
+        }
     }
 
     public static void registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
@@ -123,20 +121,24 @@ public class Main {
     }
 
     public static void removePedidoPorId(){
-        System.out.println("Digite o id do pedido a ser removido");
         Scanner scan = new Scanner(System.in);
+
+        System.out.println("Digite o NÚMERO DO PEDIDO a ser removido");
         int id = scan.nextInt();
-        Optional<Pedido> pedidoFiltrado = listaPedidos.stream().filter(pedido -> pedido.getId() == id).findFirst();
-        if(pedidoFiltrado.isPresent()){
-            if(pedidoFiltrado.get().getFuncionario().getIdentificador() == usuarioAtual.getIdentificador()){
-                listaPedidos.remove(pedidoFiltrado.get());
-                System.out.println("Pedido excluido com sucesso");
-            }else{
-                System.out.println("Pedido só pode ser excluido por seu criador");
+
+        boolean wasRemoved = false;
+
+        for(Pedido p : listaPedidos){
+            if(p.getNumeroPedido() == id){
+                listaPedidos.remove(p);
+                wasRemoved = true;
+                System.out.println("Pedido removido com sucesso.");
+                break;
             }
         }
-        else{
-            System.out.println("Pedido não encontrado");
+
+        if(!wasRemoved){
+            System.out.println("Pedido não encontrado.");
         }
     }
 
@@ -281,7 +283,7 @@ public class Main {
                     boolean isAdmin = false;
 
                     for(int i=0; i<6; i++){
-                        if(id == adminIds[i]){
+                        if(id == adminIds.get(i)){
                             System.out.println("ERRO: Funcionário é ADMINISTRADOR");
                             isAdmin =  true;
                             break;
@@ -326,10 +328,10 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        registraAdminIds(adminIds);
-
         List<Usuario> usuarios = InicializadorDados.inicializacaoUsuarios();
         listaUsuarios.addAll(usuarios);
+
+        registraAdminIds(adminIds);
 
         List<ItemDePedido> itensDePedido = InicializadorDados.inicializacaoItensDePedido();
         itens.addAll(itensDePedido);

@@ -46,7 +46,7 @@ public class Pedido {
 
     public int getId(){
         return this.id;
-    };
+    }
 
     public String getDataPedido() {
         return dataPedido;
