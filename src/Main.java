@@ -1,4 +1,6 @@
 package src;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Main {
@@ -72,17 +74,23 @@ public class Main {
     public static boolean verificaData(String dataPedido) {
         String[] pPedido = dataPedido.split("-");
 
+        if (pPedido.length != 3) {
+            return false;
+        }
+
         int anoPedido = Integer.parseInt(pPedido[2]);
         int mesPedido = Integer.parseInt(pPedido[1]);
         int diaPedido = Integer.parseInt(pPedido[0]);
 
-        LocalDate dtDataPedido = LocalDate.of(anoPedido, mesPedido, diaPedido);
-        LocalDate dtDataAtual = LocalDate.now();
+        if (anoPedido>0 && anoPedido<2024 && mesPedido>0 && mesPedido<13 && diaPedido>0 && diaPedido<32) {
+            LocalDate dtDataPedido = LocalDate.of(anoPedido, mesPedido, diaPedido);
+            LocalDate dtDataAtual = LocalDate.now();
 
-        long dias = ChronoUnit.DAYS.between(dtDataPedido, dtDataAtual);
+            long dias = ChronoUnit.DAYS.between(dtDataPedido, dtDataAtual);
+            return dias <= 30;
+        }
 
-
-        return dias <= 30;
+        return false;
     }
 
     public static void removePedidoPorId(){
@@ -165,9 +173,6 @@ public class Main {
         Map<String, Departamento> departamentos = InicializadorDados.inicializacaoDepartamentos();
 
         Menu();
-
-
-
 
         double valorMaximo = departamentos.get("Financeiro").getDepartamentoEnum().getValorMaximoPedido();
         System.out.println(valorMaximo);
