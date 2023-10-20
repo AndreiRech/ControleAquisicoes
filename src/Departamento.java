@@ -15,6 +15,11 @@ public class Departamento {
         return departamentoEnum;
     }
 
+    @Override
+    public String toString() {
+        return identificador + " - " + nome;
+    }
+
     public int getIdentificador() {
         return identificador;
     }
