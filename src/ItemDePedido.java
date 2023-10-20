@@ -10,4 +10,21 @@ public class ItemDePedido {
         this.valor = valor;
         this.quantidade = quantidade;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    @Override
+    public String toString() {
+        return  "ITEM: " + descricao + " VALOR UNITÁRIO: R$" + valor + " QUANTIDADE: " + quantidade;
+    }
 }
