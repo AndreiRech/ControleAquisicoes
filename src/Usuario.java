@@ -102,7 +102,7 @@ public class Usuario {
     public Funcionario buscarFuncionario(int id, List<Usuario> usuarios) {
         for (Usuario usuario : usuarios) {
             if (usuario.getIdentificador() == id) {
-                return new Funcionario(usuario);
+                return new Funcionario(usuario.getIdentificador(), usuario.getNome(), usuario.getDepartamento());
             }
         }
         return null;

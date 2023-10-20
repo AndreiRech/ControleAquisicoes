@@ -63,9 +63,21 @@ public class Administrador extends Usuario {
         if(pedido==null)
             System.out.println("Não existe um pedido registrado sob esse número.");
         else {
+            if(pedido.getStatus().equals(StatusPedido.APROVADO)){
+                System.out.println("Pedido já aprovado.");
+
+            } else if (pedido.getStatus().equals(StatusPedido.REPROVADO)) {
+                System.out.println("Pedido já reprovado.");
+
+            } else {
             System.out.println(pedido);
 
-            System.out.println("Digite 1 para aprovar o pedido, 2 para rejeitá-lo, ou 3 para cancelar.");
+            System.out.println();
+            System.out.println("O que deseja fazer?");
+            System.out.println("(1) Aprovar pedido");
+            System.out.println("(2) Reprovar pedido");
+            System.out.println("(3) Manter pedido em aberto");
+            System.out.println("Selecione uma opção: ");
             opcao = in.nextInt();
 
             switch (opcao) {
@@ -75,7 +87,7 @@ public class Administrador extends Usuario {
                     break;
                 case 2:
                     pedido.setStatusAprovacao(StatusPedido.REPROVADO);
-                    System.out.println("Pedido reprovado");
+                    System.out.println("Pedido reprovado.");
                     break;
                 case 3:
                     System.out.println("Pedido ainda em aberto.");
@@ -83,6 +95,8 @@ public class Administrador extends Usuario {
                 default:
                     System.out.println("Opção inválida.");
                     break;
+
+                }
             }
         }
     }

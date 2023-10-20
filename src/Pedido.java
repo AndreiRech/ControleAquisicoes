@@ -82,7 +82,6 @@ public class Pedido {
                 "\nDATA/PREVISÃO DE CONCLUSÃO: " + dataConclusao +
                 "\nSTATUS: " + status +
                 "\nITENS: " + itens +
-                "\nTOTAL DO PEDIDO: R$" + valorTotal +
-                "\n============================";
+                "\nTOTAL DO PEDIDO: R$" + valorTotal;
     }
 }

@@ -12,24 +12,34 @@ public class Main {
 
     public static Usuario usuarioAtual = new Usuario(0, "Visitante", null);
 
+    public static int[] adminIds = new int[7];
+
+    public static void registraAdminIds(int[] adminIds){
+        adminIds[0] = 2;
+        adminIds[1] = 5;
+        adminIds[2] = 8;
+        adminIds[3] = 11;
+        adminIds[4] = 14;
+        adminIds[5] = 17;
+        adminIds[6] = 20;
+    }
+
     public static void registraPedido(Funcionario funcionario, Departamento departamento, String dataPedido, String dataConclusao, List<ItemDePedido> itens) {
-        if(!funcionario.isAdmin()){
-            Random random = new Random();
-            int numeroPedido = random.nextInt(1000000);
-            double valorTotal = 0;
-            for (ItemDePedido item : itens){
-                valorTotal += item.getValor()*item.getQuantidade();
-            }
-            if (valorTotal<=departamento.getDepartamentoEnum().getValorMaximoPedido()) {
-                Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
-                listaPedidos.add(novoPedido);
-                System.out.println(novoPedido);
-                System.out.println("Pedido registrado");
-            }else{
-                System.out.println("Valor máximo por departamento excedido.");
-            }
+
+        Random random = new Random();
+        int numeroPedido = random.nextInt(1000000);
+        double valorTotal = 0;
+        for (ItemDePedido item : itens){
+            valorTotal += item.getValor()*item.getQuantidade();
+        }
+        if (valorTotal<=departamento.getDepartamentoEnum().getValorMaximoPedido()) {
+            Pedido novoPedido = new Pedido(funcionario, funcionario.getDepartamento(), dataPedido, dataConclusao, StatusPedido.ABERTO, itens, valorTotal, numeroPedido);
+            listaPedidos.add(novoPedido);
+            System.out.println(novoPedido);
+            System.out.println("Pedido registrado!");
+            System.out.println("============================");
         }else{
-            System.out.println("Usuário não pode ser admin");
+            System.out.println("Data inválida ou valor máximo do departamento excedido.");
         }
     }
 
@@ -190,6 +200,7 @@ public class Main {
         int opcao = 1;
 
         do {
+            System.out.println();
             System.out.println("===MENU DE FUNCIONÁRIO===");
 
             if (!Objects.isNull(usuarioAtual)) {
@@ -214,11 +225,9 @@ public class Main {
                 case 2:
                     System.out.println("Digite a data do Pedido (00-00-00): ");
                     String data1 = scan.next();
-                    System.out.println("Digite a data de conclusão Pedido (00-00-00): ");
+                    System.out.println("Digite a data de conclusão do Pedido (00-00-00): ");
                     String data2 = scan.next();
-                    System.out.println("Digite o identificador do funcionário responsável: ");
-                    int id = scan.nextInt();
-                    registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
+                    registraPedido(usuarioAtual.buscarFuncionario(usuarioAtual.getIdentificador(), listaUsuarios), usuarioAtual.getDepartamento(), data1, data2, itens);
                     break;
                 case 3:
                     removePedidoPorId();
@@ -236,10 +245,11 @@ public class Main {
 
         Administrador admin = new Administrador(usuarioAtual.getIdentificador(), usuarioAtual.getNome());
 
-        while(opcao !=0){
+        do {
+            System.out.println();
             System.out.println("===MENU DE ADMINISTRADOR===");
 
-            System.out.println("USUÁRIO ATUAL: "+usuarioAtual.getIdentificador()+ " - " + usuarioAtual.getNome());
+            System.out.println("USUÁRIO ATUAL: " + usuarioAtual.getIdentificador() + " - " + usuarioAtual.getNome());
 
             System.out.println("1 - Trocar usuário");
             System.out.println("2 - Registrar novo pedido");
@@ -258,6 +268,7 @@ public class Main {
             switch(opcao){
                 case 1:
                     selecionaUsuario(scan);
+
                 case 2:
                     System.out.println("Digite a data do Pedido (00-00-00): ");
                     String data1 = scan.next();
@@ -266,6 +277,20 @@ public class Main {
 
                     System.out.println("Digite o identificador do funcionário responsável: ");
                     id = scan.nextInt();
+
+                    boolean isAdmin = false;
+
+                    for(int i=0; i<6; i++){
+                        if(id == adminIds[i]){
+                            System.out.println("ERRO: Funcionário é ADMINISTRADOR");
+                            isAdmin =  true;
+                            break;
+                        }
+                    }
+
+                    if(isAdmin)
+                        break;
+
                     registraPedido(usuarioAtual.buscarFuncionario(id, listaUsuarios), usuarioAtual.buscarFuncionario(id, listaUsuarios).getDepartamento(), data1, data2, itens);
                     break;
 
@@ -297,9 +322,12 @@ public class Main {
                 default:
                     break;
             }
-        }
+        } while(opcao !=0);
     }
     public static void main(String[] args) {
+
+        registraAdminIds(adminIds);
+
         List<Usuario> usuarios = InicializadorDados.inicializacaoUsuarios();
         listaUsuarios.addAll(usuarios);
 
