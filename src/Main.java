@@ -9,7 +9,7 @@ public class Main {
     public static List<ItemDePedido> itens = new ArrayList<>();
 
     protected static List<Pedido> listaPedidos = new ArrayList<>();
-
+    public static Map<String, Departamento> departamentos = new HashMap<>();
     public static Usuario usuarioAtual = new Usuario(0, "Visitante", null);
 
     public static ArrayList<Integer> adminIds = new ArrayList<>();
@@ -41,7 +41,7 @@ public class Main {
         }
     }
 
-    public static void contPedidos(ArrayList <Pedido> pedidos) {
+    public static void contPedidos(List <Pedido> pedidos) {
         int qntTotal=0, qntAprovados=0, qntReprovados=0;
         for (Pedido p : pedidos) {
             qntTotal++;
@@ -55,10 +55,10 @@ public class Main {
 
         System.out.printf("Quantidade de pedidos : [%d]\n", qntTotal);
         System.out.printf("Quantidade de pedidos aprovados : [%d] | [%.2f%%]\n", qntAprovados, ((double) qntAprovados/qntTotal)*100);
-        System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntAprovados/qntReprovados)*100);
+        System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntReprovados/qntTotal)*100);
     }
 
-    public static double calculaMedia30(ArrayList <Pedido> pedidos, String dataAtual) {
+    public static double calculaMedia30(List <Pedido> pedidos, String dataAtual) {
         double valorTotal = 0, media = 0;
         int quantidade = 0;
 
@@ -76,19 +76,20 @@ public class Main {
         return media;
     }
 
-    public static void totalDepartamento30(ArrayList<Pedido> pedidos, ArrayList<Departamento> departamentos) {
-        for (Departamento d : departamentos) {
+    public static void totalDepartamento30(List<Pedido> pedidos, Map<String, Departamento> departamentos) {
+        for (Map.Entry<String, Departamento> entry : departamentos.entrySet()) {
+            Departamento d = entry.getValue();
             double valorTotalDepartamento = 0;
             for (Pedido p : pedidos) {
                 if (verificaData(p.getDataPedido()) && p.getDepartamento().getIdentificador() == d.getIdentificador()) {
                     valorTotalDepartamento += p.getValorTotal();
                 }
             }
-            System.out.printf("Valor total do departamento %d nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
+            System.out.printf("Valor total do departamento %s nos últimos 30 dias: %.2f\n", d.getIdentificador(), valorTotalDepartamento);
         }
     }
 
-    public static Pedido maiorPedidoAberto(ArrayList <Pedido> pedidos) {
+    public static Pedido maiorPedidoAberto(List <Pedido> pedidos) {
         Pedido maiorP = null;
         double maiorV = 0;
 
@@ -266,6 +267,10 @@ public class Main {
             System.out.println("5 - Buscar pedidos pela descrição de um item");
             System.out.println("6 - Visualizar os detalhes de um pedido para aprová-lo ou rejeitá-lo");
             System.out.println("7 - Remover pedido");
+            System.out.println("8 - Exibir número total de pedidos");
+            System.out.println("9 - Exibir o número de pedidos efetuados nos últimos 30 dias");
+            System.out.println("10 - Exibir o valor total de cada categoria nos últimos 30 dias");
+            System.out.println("11 - Exibir detalhes do pedido de aquisição de maior valor ainda aberto.");
             System.out.println("0 - Sair do programa");
 
             System.out.println();
@@ -326,6 +331,20 @@ public class Main {
                     break;
                 case 7:
                     removePedidoPorId();
+                    break;
+                case 8:
+                    contPedidos(listaPedidos);
+                    break;
+                case 9:
+                    System.out.println("Digite a data de hoje (00-00-00): ");
+                    String dataAtual = scan.next();
+                    calculaMedia30(listaPedidos, dataAtual);
+                    break;
+                case 10:
+                    totalDepartamento30(listaPedidos, departamentos);
+                    break;
+                case 11:
+                    maiorPedidoAberto(listaPedidos);
                     break;
                 default:
                     break;
