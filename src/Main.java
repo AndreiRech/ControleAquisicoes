@@ -58,7 +58,7 @@ public class Main {
         System.out.printf("Quantidade de pedidos reprovados : [%d] | [%.2f%%]", qntReprovados, ((double) qntReprovados/qntTotal)*100);
     }
 
-    public static double calculaMedia30(List <Pedido> pedidos, String dataAtual) {
+    public static double calculaMedia30(List <Pedido> pedidos) {
         double valorTotal = 0, media = 0;
         int quantidade = 0;
 
@@ -89,12 +89,12 @@ public class Main {
         }
     }
 
-    public static Pedido maiorPedidoAberto(List <Pedido> pedidos) {
+    public static void maiorPedidoAberto(List <Pedido> pedidos) {
         Pedido maiorP = null;
         double maiorV = 0;
 
         for (Pedido p : pedidos) {
-            if (p.getStatus() == StatusPedido.APROVADO) {
+            if (p.getStatus() == StatusPedido.ABERTO) {
                 if (maiorP == null || p.getValorTotal() > maiorV) {
                     maiorP = p;
                     maiorV = p.getValorTotal();
@@ -102,7 +102,7 @@ public class Main {
             }
         }
 
-        return maiorP;
+        System.out.println(maiorP);
     }
 
     public static boolean verificaData(String dataPedido) {
@@ -112,7 +112,7 @@ public class Main {
             return false;
         }
 
-        int anoPedido = Integer.parseInt(pPedido[2]);
+        int anoPedido = 2000+Integer.parseInt(pPedido[2]);
         int mesPedido = Integer.parseInt(pPedido[1]);
         int diaPedido = Integer.parseInt(pPedido[0]);
 
@@ -336,9 +336,7 @@ public class Main {
                     contPedidos(listaPedidos);
                     break;
                 case 9:
-                    System.out.println("Digite a data de hoje (00-00-00): ");
-                    String dataAtual = scan.next();
-                    calculaMedia30(listaPedidos, dataAtual);
+                    calculaMedia30(listaPedidos);
                     break;
                 case 10:
                     totalDepartamento30(listaPedidos, departamentos);
@@ -361,7 +359,7 @@ public class Main {
         List<ItemDePedido> itensDePedido = InicializadorDados.inicializacaoItensDePedido();
         itens.addAll(itensDePedido);
 
-        Map<String, Departamento> departamentos = InicializadorDados.inicializacaoDepartamentos();
+        departamentos = InicializadorDados.inicializacaoDepartamentos();
 
         menu();
 
